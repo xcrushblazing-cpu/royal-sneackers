@@ -77,6 +77,9 @@ button.ph{border:0;padding:0;width:100%;cursor:zoom-in}
 #lb .nv{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.92);color:#111;font-size:24px;cursor:pointer}#lb .pv{left:8px}#lb .nx{right:8px}
 .pm{display:flex;flex-wrap:wrap;gap:8px}.pm>div{width:84px}.pm img{width:84px;height:84px;object-fit:cover;border-radius:8px;display:block}.pm .btn{min-height:32px;padding:0 6px;font-size:12px;width:100%;margin-top:4px}
 .sh .ph{aspect-ratio:auto;height:min(42vh,340px);max-height:none;flex:none}.th{min-height:58px}
+:root{--br:#9A5B2E}:root[data-theme="dark"]{--br:#C48A55}
+.ac .btn{border:1.5px solid var(--br)}
+.buy,.sh .buy{background:#B3261E;color:#fff}
 </style>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ctext y=%22.9em%22 font-size=%2290%22%3E%F0%9F%91%91%3C/text%3E%3C/svg%3E">
 </head>
@@ -97,6 +100,7 @@ async function sha(s){const b=await crypto.subtle.digest('SHA-256',new TextEncod
 const wa=t=>'https://wa.me/'+S.cfg.wa+'?text='+encodeURIComponent(t);
 const wic='<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8.6 7.6c.3 2.8 3.1 5.6 6 6l1.3-1.3-2-1-.9.8c-1-.4-1.8-1.2-2.2-2.2l.8-.9-1-2z" fill="currentColor"/></svg>';
 const crown='<svg viewBox="0 0 64 48" width="48" height="36" fill="#C99A45" aria-hidden="true"><path d="M6 40 L2 12 L18 24 L32 6 L46 24 L62 12 L58 40 Z"/></svg>';
+function boxes(p){const c=calc(p);const l=(k,a,b)=>'<div class="pb '+k+'"><span>'+a+'</span>'+b+'</div>';return '<div class="pz">'+l('k','Avec carton',(p.pc?'<b>'+esc(p.pc)+'</b>':'')+(p.rc?'<i>'+esc(p.rc)+'</i>':''))+l('w','Sans carton',(c.ps?'<b>'+esc(c.ps)+'</b>':'')+(p.rd?'<i>'+esc(p.rd)+'</i>':'')+(c.save?'<em>Économie : '+esc(c.save)+'</em>':''))+'</div>'}
 function pnum(s){s=String(s||'');const m=s.match(/\d[\d\s\u00a0.,]*/);if(!m)return null;const raw=m[0].replace(/[.,\s\u00a0]+$/,'').trim();const cur=(s.slice(0,m.index)+s.slice(m.index+m[0].length)).trim();let sep=' ',dec=0,n;
 if(/^\d{1,3}([.,\s\u00a0]\d{3})+$/.test(raw)){sep=raw.match(/[.,\s\u00a0]/)[0];n=parseInt(raw.replace(/[.,\s\u00a0]/g,''),10)}
 else{const d=raw.match(/^(\d+)[.,](\d{1,2})$/);if(d){n=parseFloat(d[1]+'.'+d[2]);dec=1}else n=parseInt(raw.replace(/\D/g,''),10)}
@@ -106,9 +110,8 @@ function calc(p){const a=pnum(p.pc),d=parseFloat(String(p.rd||'').replace(',','.
 if(a&&p.rd&&d>0&&d<100&&!own){const v=a.n*(1-d/100);return{ps:pfmt(v,a),save:pfmt(a.n-v,a)}}
 if(a&&own){const b=pnum(own);if(b&&b.n<a.n)return{ps:own,save:pfmt(a.n-b.n,a)}}
 return{ps:own,save:''}}
-function boxes(p){const c=calc(p);const l=(k,a,b)=>'<div class="pb '+k+'"><span>'+a+'</span>'+b+'</div>';return '<div class="pz">'+l('k','Avec carton',(p.pc?'<b>'+esc(p.pc)+'</b>':'')+(p.rc?'<i>'+esc(p.rc)+'</i>':''))+l('w','Sans carton',(c.ps?'<b>'+esc(c.ps)+'</b>':'')+(p.rd?'<i>'+esc(p.rd)+'</i>':'')+(c.save?'<em>Économie : '+esc(c.save)+'</em>':''))+'</div>'}
-const BAG='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 7h12l1 13H5z"/><path d="M9 10V7a3 3 0 0 1 6 0v3"/></svg>';
-function card(p){return '<article class="card">'+(imgs(p).length?'<button type="button" class="ph" data-g="'+p.id+'" aria-label="Voir les photos de '+esc(p.name)+'"><img src="'+esc(imgs(p)[0])+'" alt="'+esc(p.name)+'" loading="lazy">'+(imgs(p).length>1?'<span class="cnt">'+imgs(p).length+' photos</span>':'')+'</button>':'<div class="ph">'+crown+'</div>')+'<div class="b"><span class="tag '+(p.status=='dispo'?'':'c')+'">'+(p.status=='dispo'?'Disponible':'Sur commande')+'</span><h3>'+esc(p.name)+'</h3>'+(p.year?'<p class="mi">Sortie <b>'+esc(p.year)+'</b></p>':'')+(p.sizes?'<p class="mi">Tailles <b>'+esc(p.sizes)+'</b></p>':'')+(p.colors?'<p class="mi c">Couleurs <b>'+esc(p.colors)+'</b></p>':'')+'<div class="ac"><button class="btn alt" data-d="'+p.id+'">Détails</button><button class="buy" data-o="'+p.id+'">'+BAG+'Commander</button></div>'+(own?'<button class="btn alt" data-e="'+p.id+'">Modifier</button>':'')+'</div></article>'}
+const BAG='<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17 2 7l5 4 5-7 5 7 5-4-1 10z" fill="#F2C14E"/><rect x="3" y="18.5" width="18" height="2.5" rx="1" fill="#F2C14E"/><circle cx="2" cy="6.5" r="1.4" fill="#F2C14E"/><circle cx="12" cy="3.5" r="1.4" fill="#F2C14E"/><circle cx="22" cy="6.5" r="1.4" fill="#F2C14E"/></svg>';
+function card(p){return '<article class="card">'+(imgs(p).length?'<button type="button" class="ph" data-g="'+p.id+'" aria-label="Voir les photos de '+esc(p.name)+'"><img src="'+esc(imgs(p)[0])+'" alt="'+esc(p.name)+'" loading="lazy">'+'</button>':'<div class="ph">'+crown+'</div>')+'<div class="b"><span class="tag '+(p.status=='dispo'?'':'c')+'">'+(p.status=='dispo'?'Disponible':'Sur commande')+'</span><h3>'+esc(p.name)+'</h3>'+(p.year?'<p class="mi">Sortie <b>'+esc(p.year)+'</b></p>':'')+(p.sizes?'<p class="mi">Tailles <b>'+esc(p.sizes)+'</b></p>':'')+(p.colors?'<p class="mi c">Couleurs <b>'+esc(p.colors)+'</b></p>':'')+'<div class="ac"><button class="btn alt" data-d="'+p.id+'">Détails</button><button class="buy" data-o="'+p.id+'">'+BAG+'Commander</button></div>'+(own?'<button class="btn alt" data-e="'+p.id+'">Modifier</button>':'')+'</div></article>'}
 function order(id){const p=S.products.find(x=>x.id==id);if(!p)return;const msg='Bonjour Royal Sneackers, je suis intéressé par '+p.name+'. Est-ce disponible ? (avec ou sans carton)',c=S.cfg;
 const L=[['WhatsApp','#17803F','https://wa.me/'+c.wa+'?text='+encodeURIComponent(msg)]];
 if(c.ig)L.push(['Instagram','#B02A78','https://ig.me/m/'+c.ig]);if(c.tk)L.push(['TikTok','#111','https://www.tiktok.com/@'+c.tk]);if(c.fb)L.push(['Facebook','#1560C8',c.fb]);if(c.ou)L.push([c.on||'Autre réseau','#5B5348',c.ou]);
@@ -123,7 +126,7 @@ $('#gr').innerHTML=h;document.querySelectorAll('[data-e]').forEach(b=>b.onclick=
 const imgs=p=>String(p&&p.img||'').split(/\s+/).filter(Boolean);
 function zoom(list,i,n){let cur=i;const l=document.createElement('div');l.id='lb';l.setAttribute('role','dialog');l.setAttribute('aria-label','Photos de '+n);
 l.innerHTML='<button class="btn g" id="lbx" aria-label="Fermer la photo">Fermer</button><img alt="'+esc(n)+'">'+(list.length>1?'<button class="nv pv" aria-label="Photo précédente">‹</button><button class="nv nx" aria-label="Photo suivante">›</button>':'')+'<p><span class="ct"></span>'+esc(n)+'</p>';
-const im=l.querySelector('img'),ct=l.querySelector('.ct');const show=()=>{im.src=list[cur];ct.textContent=list.length>1?(cur+1)+'/'+list.length+' · ':''};const go=d=>{cur=(cur+d+list.length)%list.length;show()};
+const im=l.querySelector('img'),ct=l.querySelector('.ct');const show=()=>{im.src=list[cur];ct.textContent=''};const go=d=>{cur=(cur+d+list.length)%list.length;show()};
 document.body.appendChild(l);show();
 const k=e=>{if(e.key=='Escape')c();else if(e.key=='ArrowLeft')go(-1);else if(e.key=='ArrowRight')go(1)};const c=()=>{l.remove();document.removeEventListener('keydown',k)};document.addEventListener('keydown',k);
 const pv=l.querySelector('.pv'),nx=l.querySelector('.nx');if(pv){pv.onclick=e=>{e.stopPropagation();go(-1)};nx.onclick=e=>{e.stopPropagation();go(1)}}
