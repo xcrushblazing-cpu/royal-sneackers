@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Royal Sneackers – Pour mieux porter ta couronne</title>
-<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#FBF8F3;--fg:#2B2620;--card:#fff;--mut:#6F6558;--line:#ECE4D6;--gold:#C99A45;--ok:#2F7D4F;--bt:#2B2620;--bf:#FBF8F3;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141210;--fg:#EFE8DB;--card:#1D1A16;--mut:#A89E8C;--line:#2E2923;--gold:#D4A24C;--ok:#3AA06A;--bt:#EFE8DB;--bf:#141210;color-scheme:dark}}
@@ -85,6 +85,16 @@ button.ph{border:0;padding:0;width:100%;cursor:zoom-in}
 .sh .tag{font-size:12px;padding:2px 10px;text-transform:none;letter-spacing:0}
 .fx{margin:0;font-size:15px;font-weight:700;color:var(--fg)}.fx b{font-weight:800}
 .ac{gap:6px;margin-top:auto}.ac .btn,.buy{min-height:40px}.ac .btn{font-size:12.5px;font-weight:700}.buy{font-size:12.5px;font-weight:700}.sh .buy{min-height:48px;font-size:15px}
+
+.sbx{position:relative}.sbx input{padding:0 48px 0 46px;min-height:50px}.mg{position:absolute;left:15px;top:25px;transform:translateY(-50%);color:var(--mut);pointer-events:none}
+.qx{position:absolute;right:3px;top:3px;width:44px;height:44px;border:0;background:none;color:var(--mut);cursor:pointer;display:none;align-items:center;justify-content:center;border-radius:50%}
+input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;display:none}
+.b h3{font-family:Anton,'Archivo Black',sans-serif;font-weight:400;font-size:15px;letter-spacing:0;line-height:1.3;white-space:nowrap;overflow:hidden;display:block}
+#lb img{max-height:calc(100vh - 210px);max-height:calc(100dvh - 210px)}
+#lb .nb{display:flex;align-items:center;justify-content:space-between;gap:14px;width:100%;max-width:520px}
+#lb .nb p{flex:1;text-align:center;margin:0}
+#lb .nb .nv{position:static;transform:none;flex:none}
+.b{padding:8px 7px}
 </style>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ctext y=%22.9em%22 font-size=%2290%22%3E%F0%9F%91%91%3C/text%3E%3C/svg%3E">
 </head>
@@ -128,10 +138,10 @@ l.querySelectorAll('.nw').forEach(a=>a.onclick=()=>{if(a.dataset.i!='0'){try{nav
 function calcBind(){const u=()=>{const n=$('#calc');if(!n)return;const g=k=>($('#f_'+k)||{}).value||'';const c=calc({pc:g('pc'),ps:g('ps'),rd:g('rd')});n.textContent=c.ps?'Prix sans carton affiché : '+c.ps+(c.save?' (économie : '+c.save+')':''):''};['pc','ps','rd'].forEach(k=>{const e=$('#f_'+k);if(e)e.oninput=u});u()}
 function grid(){const L=S.products.filter(p=>(flt=='all'||p.status==flt)&&hit(p,q));let h;
 if(S.loading&&!S.products.length)h=Array(6).fill('<div class="card sk"><div class="ph"></div><div class="b"><span class="sl"></span><span class="sl s2"></span></div></div>').join('');else if(L.length)h=L.map(card).join('');else if(q.trim())h='<div class="none"><h3>Pas encore actualisé</h3><p>« '+esc(q)+' » n’est pas encore sur le site. Dis-nous ce que tu cherches, on te répond sur WhatsApp.</p><a class="btn g" href="'+wa('Bonjour Royal Sneackers, je cherche cette paire : '+q)+'" target="_blank" rel="noopener">Demander cette paire</a></div>';else h='<div class="none"><p>Aucune paire pour le moment.</p></div>';
-$('#gr').innerHTML=h;document.querySelectorAll('[data-e]').forEach(b=>b.onclick=()=>openAdm(b.dataset.e));document.querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>{const p=S.products.find(x=>x.id==b.dataset.g);zoom(imgs(p),0,p.name)});document.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>detail(b.dataset.d));document.querySelectorAll('[data-o]').forEach(b=>b.onclick=()=>order(b.dataset.o))}
+$('#gr').innerHTML=h;document.querySelectorAll('[data-e]').forEach(b=>b.onclick=()=>openAdm(b.dataset.e));document.querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>{const p=S.products.find(x=>x.id==b.dataset.g);zoom(imgs(p),0,p.name)});document.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>detail(b.dataset.d));document.querySelectorAll('[data-o]').forEach(b=>b.onclick=()=>order(b.dataset.o));fitNames()}
 const imgs=p=>String(p&&p.img||'').split(/\s+/).filter(Boolean);
 function zoom(list,i,n){let cur=i;const l=document.createElement('div');l.id='lb';l.setAttribute('role','dialog');l.setAttribute('aria-label','Photos de '+n);
-l.innerHTML='<button class="btn g" id="lbx" aria-label="Fermer la photo">Fermer</button><img alt="'+esc(n)+'">'+(list.length>1?'<button class="nv pv" aria-label="Photo précédente">‹</button><button class="nv nx" aria-label="Photo suivante">›</button>':'')+'<p><span class="ct"></span>'+esc(n)+'</p>';
+l.innerHTML='<button class="btn g" id="lbx" aria-label="Fermer la photo">Fermer</button><img alt="'+esc(n)+'"><div class="nb">'+(list.length>1?'<button class="nv pv" aria-label="Photo précédente">‹</button>':'')+'<p><span class="ct"></span>'+esc(n)+'</p>'+(list.length>1?'<button class="nv nx" aria-label="Photo suivante">›</button>':'')+'</div>';
 const im=l.querySelector('img'),ct=l.querySelector('.ct');const show=()=>{im.src=list[cur];ct.textContent=''};const go=d=>{cur=(cur+d+list.length)%list.length;show()};
 document.body.appendChild(l);show();
 const k=e=>{if(e.key=='Escape')c();else if(e.key=='ArrowLeft')go(-1);else if(e.key=='ArrowRight')go(1)};const c=()=>{l.remove();document.removeEventListener('keydown',k)};document.addEventListener('keydown',k);
@@ -141,15 +151,17 @@ l.onclick=e=>{if(e.target.tagName!='IMG'&&!e.target.classList.contains('nv'))c()
 function detail(id){const p=S.products.find(x=>x.id==id);if(!p)return;const l=document.createElement('div');l.id='dt';l.setAttribute('role','dialog');l.setAttribute('aria-label',p.name);
 l.innerHTML='<div class="sh"><div class="li"><b>'+esc(p.name)+'</b><button class="btn alt" id="dx">Fermer</button></div>'+(imgs(p).length?'<button type="button" class="ph" id="mp" aria-label="Agrandir la photo"><img src="'+esc(imgs(p)[0])+'" alt="'+esc(p.name)+'"></button>'+(imgs(p).length>1?'<div class="th">'+imgs(p).map((u,i)=>'<button type="button" data-t="'+i+'" class="'+(i?'':'on')+'" aria-label="Photo '+(i+1)+'"><img src="'+esc(u)+'" alt=""></button>').join('')+'</div>':''):'')+'<p class="m bt">'+esc(p.brand)+' <span class="tag '+(p.status=='dispo'?'':'c')+'">'+(p.status=='dispo'?'Disponible':'Sur commande')+'</span></p>'+(p.desc?'<p>'+esc(p.desc)+'</p>':'')+(p.year?'<p class="fx">Année de sortie : <b>'+esc(p.year)+'</b></p>':'')+(p.sizes?'<p class="fx">Tailles : <b>'+esc(p.sizes)+'</b></p>':'')+(p.colors?'<p class="fx">Couleurs disponibles : <b>'+esc(tidy(p.colors))+'</b></p>':'')+boxes(p)+'<p class="m">Livraison : France · Bénin · Côte d’Ivoire · Niger · Togo</p><button class="buy" data-o="'+p.id+'">'+BAG+'Commander</button></div>';
 document.body.appendChild(l);const k=e=>{if(e.key=='Escape')c()};const c=()=>{l.remove();document.removeEventListener('keydown',k)};document.addEventListener('keydown',k);l.onclick=e=>{if(e.target==l)c()};l.querySelector('#dx').onclick=c;l.querySelector('[data-o]').onclick=()=>order(p.id);const L2=imgs(p);let cu=0;const mp=l.querySelector('#mp');if(mp){mp.onclick=()=>zoom(L2,cu,p.name);l.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{cu=+b.dataset.t;mp.querySelector('img').src=L2[cu];l.querySelectorAll('[data-t]').forEach(x=>x.classList.toggle('on',x==b))})}l.querySelector('#dx').focus()}
+function fitNames(){document.querySelectorAll('.card h3').forEach(h=>{let f=15;h.style.fontSize=f+'px';while(h.scrollWidth>h.clientWidth+1&&f>9){f-=.5;h.style.fontSize=f+'px'}})}
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fitNames);window.addEventListener('resize',fitNames);
 function theme(){const t=document.documentElement.dataset.theme=='dark'?'light':'dark';document.documentElement.dataset.theme=t;try{localStorage.setItem('rs-theme',t)}catch(x){}}
 function render(){const c=S.cfg;
 $('#app').innerHTML='<div class="w"><div class="top"><img src="logo.png" alt="Royal Sneackers"><div class="sp"></div>'+(own?'<span class="hol">Holder Online</span>':'')+'<button class="ic" id="th" aria-label="Changer entre mode clair et sombre"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M21 13A9 9 0 1 1 11 3a7 7 0 0 0 10 10z"/></svg></button><a class="ic wa" href="'+wa('Bonjour Royal Sneackers !')+'" target="_blank" rel="noopener" aria-label="Écrire sur WhatsApp">'+wic+'</a></div>'+
 '<p class="tl">Pour mieux porter ta <span style="color:var(--gold)">couronne.</span></p>'+
-'<section><input id="q" type="search" placeholder="Cherche une marque ou une paire (Nike, Dior…)" value="'+esc(q)+'" aria-label="Chercher une paire"><div class="bar"><button data-f="all">Toutes</button><button data-f="dispo">Disponibles</button><button data-f="commande">Sur commande</button></div><div class="grid" id="gr"></div></section>'+
+'<section><div class="sbx"><svg class="mg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="q" type="search" placeholder="Rechercher une chaussure…" value="'+esc(q)+'" aria-label="Rechercher une chaussure" autocomplete="off"><button type="button" class="qx" id="qx" aria-label="Effacer la recherche"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div><div class="bar"><button data-f="all">Toutes</button><button data-f="dispo">Disponibles</button><button data-f="commande">Sur commande</button></div><div class="grid" id="gr"></div></section>'+
 '<section class="foot"><p>Choisis ta paire, puis écris-nous sur WhatsApp pour confirmer ta commande. Expédition sous 24/48 h si disponible, 3 à 7 jours sur commande.</p><p><a href="https://wa.me/'+esc(c.wa)+'" target="_blank" rel="noopener">WhatsApp</a>'+(c.ig?'<a href="https://instagram.com/'+esc(c.ig)+'" target="_blank" rel="noopener">Instagram</a>':'')+(c.tk?'<a href="https://tiktok.com/@'+esc(c.tk)+'" target="_blank" rel="noopener">TikTok</a>':'')+(c.fb?'<a href="'+esc(c.fb)+'" target="_blank" rel="noopener">Facebook</a>':'')+(c.ou?'<a href="'+esc(c.ou)+'" target="_blank" rel="noopener">'+esc(c.on||'Lien')+'</a>':'')+'</p><button class="btn alt" id="gest">Gérer ma boutique</button></section></div>';
 const bs=()=>document.querySelectorAll('[data-f]').forEach(b=>b.classList.toggle('on',b.dataset.f==flt));
 document.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{flt=b.dataset.f;bs();grid()});bs();
-$('#q').oninput=e=>{q=e.target.value;grid();miss()};$('#th').onclick=theme;grid();badge();
+const sx=()=>{$('#qx').style.display=q?'flex':'none'};sx();$('#q').oninput=e=>{q=e.target.value;sx();grid();miss()};$('#qx').onclick=()=>{q='';$('#q').value='';sx();grid();$('#q').focus()};$('#th').onclick=theme;grid();badge();
 $('#gest').onclick=()=>{own?openAdm(null):login()}}
 
 function box(h){let m=$('#adm');if(!m){m=document.createElement('div');m.id='adm';document.body.appendChild(m)}m.innerHTML='<div class="pn">'+h+'<p class="ms" id="ms"></p></div>';return m}
